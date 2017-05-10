@@ -1,3 +1,7 @@
+body {
+	font-family: 'Lato', sans-serif;	
+}
+
 .modal {
 	position: fixed;
 	z-index: 1;
@@ -19,6 +23,16 @@
 	font-family: sans-serif;
 }
 
+.container {
+	margin: 0 auto;
+	width: 100%;
+	text-align: center;
+}
+
+h2 {
+	margin-left: 10px;
+}
+
 .currImage {
 	height: 90%;
 	width: 100%;
@@ -31,19 +45,26 @@
 
 
 .photo-list {
-	display: inline;
+	display: block;
+	text-align: center;	
+	width: 90%;
+	margin: auto;
+	padding-left: 0;
 }
 
 .photo-list li {
 	list-style-type: none;
 	float: left;
+	height: 400px;
+	width: 400px;
+	margin: 10px;
+	line-height: 400px;
 }
 
 .photo-list img {
-	float: left;
-	padding: 10px;
-	max-height: 450px;
-	max-width: 450px;
+	max-height: 400px;
+	max-width: 400px;
+	vertical-align: middle;
 }
 
 .currTitle, .prev, .next {
@@ -69,4 +90,23 @@
 
 .nextImages .nextImg1, .nextImg2, .nextImg3, .nextImg4 {
 
+}
+
+input[type="text"] {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 18px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+
+  padding: 10px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+input[type="text"]:focus,
+input[type="text"].focus {
+  outline: none;	
+  border: solid 1px #707070;
+  box-shadow: 0 0 5px 1px #969696;
 }

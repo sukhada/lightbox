@@ -7,43 +7,50 @@
   <title>Slack Exercise</title>
   <meta name="description" content="Slack Exercise">
   <meta name="author" content="Sukhada Kulkarni">
+  <link rel="icon" href="light_icon.png"> 
   <link rel="stylesheet" type="text/css" href="slack.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
 
 <body>
+  <h2>Slickr</h2>
+  <div class="container">
+    <div class="search">
+      <label>Enter a Flickr username: </label>
+      <input type="text" class="imgSrcLink">
+    </div>
+    <ul class="photo-list"></ul>
+    <div class="modal">
+      <div class="escape">x</div>
+      <a class="prev">&#10094;</a>
+      <div class="currImage">
+        <img class="currImageNode"></img>
+        <p class="currTitle"></p>
+      </div>
+      <ul class="nextImages">
+        <li class="nextImg1">
+          <img class="nextImgNode nextImgNode1"></img>
+        </li>
+        <li class="nextImg2">
+          <img class="nextImgNode nextImgNode2"></img>
+        </li>
+        <li class="nextImg3">
+          <img class="nextImgNode nextImgNode3"></img>
+        </li>
+        <li class="nextImg4">
+          <img class="nextImgNode nextImgNode4"></img>
+        </li>
+      </ul>    
+      <a class="next">&#10095;</a>
+    </div>
+  </div>  
+</body>
+
   <script src="photo.js"></script>  
   <script src="flickr.js"></script>
   <script src="lightbox.js"></script>  
   <script src="slack.js"></script>
-  <div class="search">
-    <input class="imgSrcLink">
-  </div>
-  <ul class="photo-list"></ul>
-  <div class="modal">
-    <div class="escape">x</div>
-    <a class="prev">&#10094;</a>
-    <div class="currImage">
-      <img class="currImageNode"></img>
-      <p class="currTitle"></p>
-    </div>
-    <ul class="nextImages">
-      <li class="nextImg1">
-        <img class="nextImgNode nextImgNode1"></img>
-      </li>
-      <li class="nextImg2">
-        <img class="nextImgNode nextImgNode2"></img>
-      </li>
-      <li class="nextImg3">
-        <img class="nextImgNode nextImgNode3"></img>
-      </li>
-      <li class="nextImg4">
-        <img class="nextImgNode nextImgNode4"></img>
-      </li>
-    </ul>    
-    <a class="next">&#10095;</a>
-  </div>
-</body>
 </html>
