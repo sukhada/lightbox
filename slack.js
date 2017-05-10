@@ -1,15 +1,18 @@
 function FlickrPhotoService() {
 	this.flickrAPIKey = 'f1ee27af61a551f5132d9ae046d371e7';
 	this.flickrUserID = '15778088%40N00';
-	this.flickrGetPhotosURL = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + this.flickrAPIKey + '&user_id=' + this.flickrUserID + '&format=json';
+	this.pageCount = 1;	
+	this.flickrGetPhotosURL = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + this.flickrAPIKey + '&user_id=' + this.flickrUserID + '&format=json&nojsoncallback=1&page=' + this.pageCount;
 	this.flickrGetInfoURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=' + this.flickrAPIKey + '&format=json&nojsoncallback=1';
+	this.flickrUsername = '';
+	this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';
 
-	this.getPhotoInfo = function(photoID, secret, fCallback, index) {
+	this.getPhotoInfo = function(photoID, secret, callback, index) {
 		var xmlHTTP = new XMLHttpRequest();
 		xmlHTTP.onreadystatechange = function() {
 			if (xmlHTTP.readyState === XMLHttpRequest.DONE) {
 				if (xmlHTTP.status === 200) {
-					fCallback(xmlHTTP, index);
+					callback(xmlHTTP, index);
 				}
 	   			else if (xmlHTTP.status == 400) {
 	            	console.log('There was an error 400');
@@ -23,37 +26,58 @@ function FlickrPhotoService() {
 	    xmlHTTP.send();		
 	}
 
+	this.getUsername = function(username) {
+		var xmlHTTP = new XMLHttpRequest();
+		var self = this;
+		this.flickrUsername = username;
+		this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';		
+		xmlHTTP.onreadystatechange = function() {
+					if (xmlHTTP.readyState === XMLHttpRequest.DONE) {
+						if (xmlHTTP.status === 200) {
+							if (xmlHTTP.responseText) {
+								responseJSON = JSON.parse(xmlHTTP.responseText);
+								if (responseJSON.user && responseJSON.user.id) {
+									self.flickrUserID = responseJSON.user.id;
+									self.pageCount = 1;
+									self.getPhotos();
+								}
+							}
+						}
+			   			else if (xmlHTTP.status == 400) {
+			            	console.log('There was an error 400');
+			           }
+			           else {
+			            	console.log('something else other than 200 was returned');
+			           }
+					}
+				};
+				xmlHTTP.open("GET", this.flickrGetUsernameURL, true);
+			    xmlHTTP.send();
+
+	}
+
 	this.getPhotos = function() {
 		var xmlHTTP = new XMLHttpRequest();
 		var self = this;
 
+		this.flickrGetPhotosURL = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + this.flickrAPIKey + '&user_id=' + this.flickrUserID + '&format=json&nojsoncallback=1&page=' + this.pageCount;
+		
 		xmlHTTP.onreadystatechange = function() {
 			if (xmlHTTP.readyState === XMLHttpRequest.DONE) {
 				if (xmlHTTP.status === 200) {
-					if (xmlHTTP.responseText.indexOf('jsonFlickrApi') >= 0) {
-						responseJSON = self.processResponseText(xmlHTTP.responseText);
+						responseJSON = JSON.parse(xmlHTTP.responseText);
 						renderPhotos(responseJSON);
-					}
 				}
 	   			else if (xmlHTTP.status == 400) {
 	            	console.log('There was an error 400');
 	           }
 	           else {
 	            	console.log('something else other than 200 was returned');
-	           }			
+	           }
 			}
 		};
 		xmlHTTP.open("GET", this.flickrGetPhotosURL, true);
 	    xmlHTTP.send();
-	}
-
-	this.processResponseText = function(responseText) {
-		// figure out a better way to do this!
-		responseText = responseText.replace('jsonFlickrApi(', '');
-		responseText = responseText.replace(')', '');
-		responseJSON = JSON.parse(responseText);
-
-		return responseJSON;		
 	}
 }
 
@@ -80,12 +104,16 @@ function renderPhotos(responseJSON) {
 	    }
 	    if (isEscape) {
 	    	self.lightbox.closeModal();
+	    	self.lightbox.clearCurrentImg();
 	    }
 	    if (isNext) {
-	    	self.lightbox.renderSlide(self.lightbox.currIndex+1)
+	    	self.lightbox.clearCurrentImg();
+	    	self.lightbox.renderSlide(self.lightbox.currIndex+1);
+
 	    }
 	    if (isPrev) {
-	    	self.lightbox.renderSlide(self.lightbox.currIndex-1)
+	    	self.lightbox.clearCurrentImg();	    	
+	    	self.lightbox.renderSlide(self.lightbox.currIndex-1);
 	    }
 	};
 	
@@ -105,17 +133,18 @@ function renderPhotos(responseJSON) {
 	next.addEventListener('click', function(event) {
 		self.lightbox.renderSlide(self.lightbox.currIndex+1)
 	});	
-	var nextImageNodes = document.getElementsByClassName('nextImgNode');
+
+	/*var nextImageNodes = document.getElementsByClassName('nextImgNode');
 	for (var i = 0; i < nextImageNodes.length; i++) {
 		var nextImageNode = nextImageNodes[i];
 		nextImageNode.addEventListener('click', function(event) {
-			if (event.srcElement && event.srcElement.src) {
-				var index = event.srcElement.getAttribute('data-image-num');
+			if (event.target && event.target.src) {
+				var index = event.target.getAttribute('data-image-num');
 				console.log(index);
 				self.lightbox.renderSlide(index);			
 			}				
 		});
-	}	
+	}	*/
 }
 
 function Photo(mediumURL, highResURL, title) {
@@ -155,13 +184,13 @@ function constructTitle(photoJSON) {
 	return photoJSON.title;
 }
 
-
-
 function Lightbox() {
 	this.photos = [];
 	this.currIndex = 0;
 
 	var self = this;
+	var ul = document.getElementsByClassName('photo-list')[0];	
+
 	this.appendPhoto = function(response, index) {
 		var photoInfoJSON = JSON.parse(response.responseText);
 		var photoObj = constructPhoto(photoInfoJSON.photo);
@@ -173,16 +202,16 @@ function Lightbox() {
 		img.src = photoObj.getMediumSizeURL();
 		img.title = photoObj.getTitle();
 		img.setAttribute('data-image-num', self.photos.length - 1)
-		li.append(img);
-		ul.append(li);
+		ul.appendChild(li);
 		li.addEventListener('click', function(event) {
 			event.preventDefault();
-			if (event.srcElement && event.srcElement.src) {
-				var index = event.srcElement.getAttribute('data-image-num');
+			if (event.target && event.target.src) {
+				var index = event.target.getAttribute('data-image-num');
 				self.openModal();
 				self.renderSlide(index);			
 			}
 		});
+		li.appendChild(img);		
 	}
 
 	this.openModal = function() {
@@ -205,8 +234,8 @@ function Lightbox() {
 		currentTitle.textContent = imgTitle;
 		currentImageNode.src = imgURL;
 		this.currIndex = parseInt(num,10);
-		var nextImages = document.getElementsByClassName('nextImages')[0];
-		var nextPhotos = this.getNextPhotos(parseInt(num,10));
+		//var nextImages = document.getElementsByClassName('nextImages')[0];
+		//var nextPhotos = this.getNextPhotos(parseInt(num,10));
 	}
 
 	this.getNextPhotos = function(num) {
@@ -217,8 +246,39 @@ function Lightbox() {
 			nextImageNode.setAttribute('data-image-num', num+i);
 		}
 	}
+
+	this.clearCurrentImg = function() {
+		var currentImageNode = document.getElementsByClassName('currImageNode')[0];
+		currentImageNode.src = 'https://playerslounge.co/images/loading.gif';		
+	}
 }
-	
+
+if (window.addEventListener) {
+	var self = this;
+	window.addEventListener('load', function() {
+		var link = document.getElementsByClassName('imgSrcLink')[0];  
+		link.addEventListener('keypress', function(event) {
+		    if ("key" in event && event.key === "Enter") {
+		    	self.flickrService.getUsername(event.target.value);
+		    }
+		});  	
+	});
+
+	document.addEventListener('scroll', function (event) {
+	    if (document.body.scrollHeight == 
+	        document.body.scrollTop +        
+	        window.innerHeight) {
+	    	self.flickrService.pageCount += 1;
+	    	self.flickrService.getPhotos();
+	    }
+	});
+
+
+}
+else {
+  	window.attachEvent('onload', func1)
+}
+
 
 this.flickrService = new FlickrPhotoService();
 this.flickrService.getPhotos();

@@ -20,12 +20,13 @@
 }
 
 .currImage {
+	height: 90%;
 	width: 100%;
 	text-align: center;
 }
 
 .currImage img {
-	max-height: 700px;
+	max-height: 100%;
 }
 
 
@@ -40,8 +41,7 @@
 .photo-list img {
 	float: left;
 	padding: 10px;
-	max-width: 450px;
-
+	height: 450px;
 }
 
 .currTitle, .prev, .next {
