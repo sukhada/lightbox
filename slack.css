@@ -36,12 +36,14 @@
 
 .photo-list li {
 	list-style-type: none;
+	float: left;
 }
 
 .photo-list img {
 	float: left;
 	padding: 10px;
-	height: 450px;
+	max-height: 450px;
+	max-width: 450px;
 }
 
 .currTitle, .prev, .next {
