@@ -4,8 +4,8 @@ function FlickrPhotoService() {
 	this.pageCount = 1;	
 	this.flickrGetPhotosURL = 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + this.flickrAPIKey + '&user_id=' + this.flickrUserID + '&format=json&nojsoncallback=1&page=' + this.pageCount;
 	this.flickrGetInfoURL = 'https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=' + this.flickrAPIKey + '&format=json&nojsoncallback=1';
-	this.flickrUsername = '';
-	this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';
+	this.flickrUsername = 'http://www.flickr.com/photos/';
+	this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';
 
 	this.getPhotoInfo = function(photoID, secret, callback, index) {
 		var xmlHTTP = new XMLHttpRequest();
@@ -29,8 +29,9 @@ function FlickrPhotoService() {
 	this.getUsername = function(username) {
 		var xmlHTTP = new XMLHttpRequest();
 		var self = this;
-		this.flickrUsername = username;
-		this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';		
+		this.flickrUsername = 'http://www.flickr.com/photos/';
+		this.flickrUsername += username;
+		this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=' + this.flickrAPIKey + '&url=' + this.flickrUsername + '&format=json&nojsoncallback=1';
 		xmlHTTP.onreadystatechange = function() {
 					if (xmlHTTP.readyState === XMLHttpRequest.DONE) {
 						if (xmlHTTP.status === 200) {
