@@ -66,8 +66,8 @@ function Lightbox() {
 	}
 
 	this.constructPhoto = function(jsonResponse) {
-		var mediumURL = self.constructImageURL(jsonResponse, 'z');
-		var highResURL = self.constructImageURL(jsonResponse, 'h');
+		var mediumURL = self.constructImageURL(jsonResponse, '_z');
+		var highResURL = self.constructImageURL(jsonResponse, '_o');
 		var title = jsonResponse.title._content;	
 		return new Photo(mediumURL, highResURL, title);
 	}
@@ -77,6 +77,13 @@ function Lightbox() {
 		var server = photoJSON.server;
 		var id = photoJSON.id;
 		var secret = photoJSON.secret;
-		return 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '_' + size + '.jpg'
+		if (size === '_o'){
+			if (!photoJSON.originalsecret) {
+				size = '';
+			}
+			secret = photoJSON.originalsecret || photoJSON.secret;
+		}
+		return 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + size + '.jpg'
+
 	}
 }
