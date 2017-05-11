@@ -6,6 +6,15 @@ body.modal-open {
 	overflow: hidden;
 }
 
+.errors {
+	margin-top: 10px;
+	color: red;
+}
+
+.search {
+	margin-bottom: 50px;
+}
+
 .modal {
 	position: fixed;
 	z-index: 1;
@@ -34,8 +43,10 @@ body.modal-open {
 	text-align: center;
 }
 
-h2 {
-	margin-left: 10px;
+h1 {
+	margin-left: 20px;
+	font-weight: 600;
+	color: #ff0084;
 }
 
 .currImage {
@@ -109,6 +120,6 @@ input[type="text"] {
 input[type="text"]:focus,
 input[type="text"].focus {
   outline: none;	
-  border: solid 1px #707070;
-  box-shadow: 0 0 5px 1px #969696;
+  border: solid 1px #dcdcdc;
+  box-shadow: 0 0 5px 1px #ff0084;
 }

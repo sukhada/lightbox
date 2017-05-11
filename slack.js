@@ -1,6 +1,9 @@
 function renderPhotos(responseJSON, clearPhotos) {
 	var len = responseJSON.photos.photo.length;
 	var photos = responseJSON.photos.photo;
+	var errorDiv = document.getElementsByClassName('errors')[0];	
+	errorDiv.innerHTML = '';
+		
 	if (!this.lightbox) {
 		this.lightbox = new Lightbox();
 	}
@@ -11,10 +14,16 @@ function renderPhotos(responseJSON, clearPhotos) {
 	
 	for (var i = 0; i < len-1; i++) {
 		var photo = photos[i];
-		this.flickrService.getPhotoInfo(photo.id, photo.secret, this.lightbox.appendPhoto, this.lightbox, i);
+		this.flickrService.getPhotoInfo(photo.id, photo.secret, this.lightbox, i);
 	}
 
 	addEventListeners();
+}
+
+function renderError(errorMsg) {
+	var errorDiv = document.getElementsByClassName('errors')[0];	
+	errorDiv.innerHTML = errorMsg;
+	this.lightbox.ul.innerHTML = '';	
 }
 
 function addEventListeners() {
@@ -51,7 +60,7 @@ function addEventListeners() {
         isEscape = (evt.keyCode === 27);
         isNext = (evt.keyCode === 39);
         isPrev = (evt.keyCode === 37);
-        
+
 	    if (isEscape) {
 	    	self.lightbox.closeModal();
 	    	self.lightbox.clearCurrentImg();

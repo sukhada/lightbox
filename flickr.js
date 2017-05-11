@@ -7,12 +7,12 @@ function FlickrPhotoService() {
 	this.flickrUsername = 'http://www.flickr.com/photos/';
 	this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';
 
-	this.getPhotoInfo = function(photoID, secret, callback, lightbox, index) {
+	this.getPhotoInfo = function(photoID, secret, lightbox, index) {
 		var xmlHTTP = new XMLHttpRequest();
 		xmlHTTP.onreadystatechange = function() {
 			if (xmlHTTP.readyState === XMLHttpRequest.DONE) {
 				if (xmlHTTP.status === 200) {
-					callback.call(lightbox, xmlHTTP, index);
+					lightbox.appendPhoto.call(lightbox, xmlHTTP, index);
 				}
 	   			else if (xmlHTTP.status == 400) {
 	            	console.log('There was an error 400');
@@ -42,10 +42,13 @@ function FlickrPhotoService() {
 									self.pageCount = 1;
 									self.getPhotos(true);
 								}
+								else if (responseJSON.stat === "fail" && responseJSON.message) {
+									renderError(responseJSON.message);
+								}
 							}
 						}
 			   			else if (xmlHTTP.status == 400) {
-			            	console.log('There was an error 400');
+			   				renderError("There was an error looking up this user");
 			           }
 			           else {
 			            	console.log('something else other than 200 was returned');
