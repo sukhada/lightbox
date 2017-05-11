@@ -7,6 +7,7 @@ function FlickrPhotoService() {
 	this.flickrUsername = 'http://www.flickr.com/photos/';
 	this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';
 
+	// gets detailed photo info (including title, url info etc.)
 	this.getPhotoInfo = function(photoID, secret, lightbox, index) {
 		var xmlHTTP = new XMLHttpRequest();
 		xmlHTTP.onreadystatechange = function() {
@@ -14,18 +15,13 @@ function FlickrPhotoService() {
 				if (xmlHTTP.status === 200) {
 					lightbox.appendPhoto.call(lightbox, xmlHTTP, index);
 				}
-	   			else if (xmlHTTP.status == 400) {
-	            	console.log('There was an error 400');
-	           }
-	           else {
-	            	console.log('something else other than 200 was returned');
-	           }			
 			}
 		};
 		xmlHTTP.open("GET", this.flickrGetInfoURL + '&photo_id=' + photoID + '&secret=' + secret, true);
 	    xmlHTTP.send();		
 	}
 
+	// gets flickr ID given a username
 	this.getUsername = function(username) {
 		var xmlHTTP = new XMLHttpRequest();
 		var self = this;
@@ -60,6 +56,7 @@ function FlickrPhotoService() {
 
 	}
 
+	// gets list of photos given a Flickr ID
 	this.getPhotos = function(clearPhotos) {
 		var xmlHTTP = new XMLHttpRequest();
 		var self = this;

@@ -1,3 +1,4 @@
+// generates lightbox & fetches individual photo info
 function renderPhotos(responseJSON, clearPhotos) {
 	var len = responseJSON.photos.photo.length;
 	var errorDiv = document.getElementsByClassName('errors')[0];	
@@ -22,16 +23,19 @@ function renderPhotos(responseJSON, clearPhotos) {
 		var photo = photos[i];
 		this.flickrService.getPhotoInfo(photo.id, photo.secret, this.lightbox, i);
 	}
-
-	addEventListeners();
+	if (!clearPhotos) {
+		addEventListeners();		
+	}
 }
 
+// renders any errors 
 function renderError(errorMsg) {
 	var errorDiv = document.getElementsByClassName('errors')[0];	
 	errorDiv.innerHTML = errorMsg;
 	this.lightbox.ul.innerHTML = '';	
 }
 
+// adds event listeners for all click handlers
 function addEventListeners() {
 	var modal = document.getElementsByClassName('modal')[0];
 	var escape = document.getElementsByClassName('escape')[0];
@@ -58,7 +62,7 @@ function addEventListeners() {
 		self.lightbox.renderSlide(self.lightbox.currIndex+1)
 	});
 	submit.addEventListener('click', function(event) {
-		var link = document.getElementsByClassName('imgSrcLink')[0];		
+		var link = document.getElementsByClassName('usernameSrc')[0];		
 		self.flickrService.getUsername(link.value);
 	});
 
@@ -86,10 +90,11 @@ function addEventListeners() {
 	};	
 }	
 
-if (window.addEventListener) {
+// renders on page load event listeners
+function onPageLoadListeners() {
 	var self = this;
 	window.addEventListener('load', function() {
-		var link = document.getElementsByClassName('imgSrcLink')[0];  
+		var link = document.getElementsByClassName('usernameSrc')[0];  
 		link.addEventListener('keypress', function(event) {
 		    if (event.keyCode === 13) {
 		    	self.flickrService.getUsername(event.target.value);
@@ -103,8 +108,12 @@ if (window.addEventListener) {
 	    	self.flickrService.getPhotos(false);
 	    }
 	};
-
 }
 
+// creates Flickr service that handles API calls
 this.flickrService = new FlickrPhotoService();
 this.flickrService.getPhotos(false);
+
+if (window.addEventListener) {
+	onPageLoadListeners();
+}

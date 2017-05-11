@@ -4,6 +4,7 @@ var Lightbox = function() {
 	this.ul = document.getElementsByClassName('photo-list')[0];
 };
 
+// constructs photo object
 Lightbox.prototype.constructPhoto = function(jsonResponse) {
 	var mediumURL = this.constructImageURL(jsonResponse, '_z');
 	var highResURL = this.constructImageURL(jsonResponse, '_o');
@@ -11,6 +12,7 @@ Lightbox.prototype.constructPhoto = function(jsonResponse) {
 	return new Photo(mediumURL, highResURL, title);
 };
 
+// adds photo to photo list
 Lightbox.prototype.appendPhoto = function(response, index) {
 	var photoInfoJSON = JSON.parse(response.responseText);
 	var photoObj = this.constructPhoto(photoInfoJSON.photo);
@@ -46,8 +48,11 @@ Lightbox.prototype.closeModal = function() {
 	document.body.className = document.body.className.replace("modal-open","");
 };
 
+
+// renders high res version of selected image
 Lightbox.prototype.renderSlide = function(num) {
 	var prev = document.getElementsByClassName('prev')[0];
+	var next = document.getElementsByClassName('next')[0];
 	if (num < 0 || num > this.photos.length-1) {
 		return;
 	}
@@ -58,7 +63,13 @@ Lightbox.prototype.renderSlide = function(num) {
 		prev.style.display = 'block';
 	}
 
-    this.clearCurrentImg();
+	if (num === this.photos.length-1) {
+		next.style.display = 'none';
+	}
+	else {
+		next.style.display = 'block';		
+	}
+	this.clearCurrentImg();
 	var photo = this.photos[num];
 	var imgURL = photo.getHighResURL();
 	var imgTitle = photo.getTitle();
@@ -71,11 +82,13 @@ Lightbox.prototype.renderSlide = function(num) {
 	this.preloadNextAndPrevImgs();
 };
 
+// empties current image
 Lightbox.prototype.clearCurrentImg = function() {
 	var currentImageNode = document.getElementsByClassName('currImageNode')[0];
 	currentImageNode.src = 'loader.gif';		
 };
 
+// preloads the next and previous images
 Lightbox.prototype.preloadNextAndPrevImgs = function() {
 	var img = new Image();
 	var next = this.currIndex + 1;
@@ -88,7 +101,7 @@ Lightbox.prototype.preloadNextAndPrevImgs = function() {
 	}
 };
 
-
+// generates image URL depending on desired size
 Lightbox.prototype.constructImageURL = function(photoJSON, size) {
 	var farm = photoJSON.farm;
 	var server = photoJSON.server;
