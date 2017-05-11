@@ -72,12 +72,10 @@ function addEventListeners() {
 	    	self.lightbox.clearCurrentImg();
 	    }
 	    if (isNext) {
-	    	self.lightbox.clearCurrentImg();
 	    	self.lightbox.renderSlide(self.lightbox.currIndex+1);
 
 	    }
 	    if (isPrev) {
-	    	self.lightbox.clearCurrentImg();	    	
 	    	self.lightbox.renderSlide(self.lightbox.currIndex-1);
 	    }
 	};	

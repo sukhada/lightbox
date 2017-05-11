@@ -39,6 +39,11 @@ function Lightbox() {
 	}
 
 	this.renderSlide = function(num) {
+		if (num < 0 || num > this.photos.length-1) {
+			alert('Photo not found!');
+			return;
+		}
+	    this.clearCurrentImg();
 		var photo = this.photos[num];
 		var imgURL = photo.getHighResURL();
 		var imgTitle = photo.getTitle();
@@ -48,23 +53,25 @@ function Lightbox() {
 		currentTitle.textContent = imgTitle;
 		currentImageNode.src = imgURL;
 		this.currIndex = parseInt(num,10);
-		//var nextImages = document.getElementsByClassName('nextImages')[0];
-		//var nextPhotos = this.getNextPhotos(parseInt(num,10));
-	}
-
-	this.getNextPhotos = function(num) {
-		for (var i = 1; i < 5; i++) {
-			var nextPhoto = this.photos[num+i];
-			var nextImageNode = document.getElementsByClassName('nextImgNode' + i)[0];
-			nextImageNode.src = nextPhoto.getMediumSizeURL();
-			nextImageNode.setAttribute('data-image-num', num+i);
-		}
+		this.preloadNextAndPrevImgs();
 	}
 
 	this.clearCurrentImg = function() {
 		var currentImageNode = document.getElementsByClassName('currImageNode')[0];
 		// REPLACE THIS LINK
 		currentImageNode.src = 'https://playerslounge.co/images/loading.gif';		
+	}
+
+	this.preloadNextAndPrevImgs = function() {
+		var img = new Image();
+		var next = self.currIndex + 1;
+		var prev = self.currIndex - 1;
+		if (prev >= 0) {
+			img.src = this.photos[prev].getHighResURL();
+		}
+		if (next <= this.photos.length-1) {
+			img.src = this.photos[next].getHighResURL();
+		}
 	}
 
 	this.constructPhoto = function(jsonResponse) {
