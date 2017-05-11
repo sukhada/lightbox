@@ -1,5 +1,6 @@
 body {
-	font-family: 'Lato', sans-serif;	
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;	
 }
 
 body.modal-open {
@@ -13,6 +14,27 @@ body.modal-open {
 
 .search {
 	margin-bottom: 50px;
+	text-align: left;
+	margin-left: 20px;
+}
+
+input[type="text"] {
+	margin-left: 10px;
+	font-family: 'Lato', sans-serif;
+	border-radius: none;
+	padding: 10px;
+	border: solid 1px #dcdcdc;
+	box-shadow: none;  
+	transition: box-shadow 0.25s, border 0.25s;  
+	font-size: 18px;
+	appearance: none;
+
+}
+input[type="text"]:focus,
+input[type="text"].focus {
+	outline: none;	
+	border: solid 1px #dcdcdc;
+	box-shadow: 0 0 5px 1px #ff0084;
 }
 
 .modal {
@@ -57,7 +79,12 @@ h1 {
 
 .currImage img {
 	max-height: 90%;
-	margin-top: 10px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	margin: auto;
 }
 
 
@@ -86,6 +113,7 @@ h1 {
 
 .currTitle {
 	color: white;
+	margin-top: 10px;
 }
 
 .next svg path, .prev svg path {
@@ -103,23 +131,4 @@ h1 {
 
 .prev {
 	left: 0;
-}
-
-input[type="text"] {
-  margin: 0;
-  font-family: sans-serif;
-  font-size: 18px;
-  appearance: none;
-  box-shadow: none;
-  border-radius: none;
-
-  padding: 10px;
-  border: solid 1px #dcdcdc;
-  transition: box-shadow 0.3s, border 0.3s;
-}
-input[type="text"]:focus,
-input[type="text"].focus {
-  outline: none;	
-  border: solid 1px #dcdcdc;
-  box-shadow: 0 0 5px 1px #ff0084;
 }
