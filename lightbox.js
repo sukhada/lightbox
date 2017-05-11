@@ -29,11 +29,13 @@ function Lightbox() {
 	this.openModal = function() {
 		this.modal = document.getElementsByClassName('modal')[0];
 		this.modal.style.display = 'block';	
+		document.body.className += 'modal-open';
 	}
 
 	this.closeModal = function() {
 		this.modal = document.getElementsByClassName('modal')[0];
-		this.modal.style.display = 'none';	
+		this.modal.style.display = 'none';
+		document.body.className = document.body.className.replace("modal-open","");
 	}
 
 	this.renderSlide = function(num) {

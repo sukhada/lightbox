@@ -2,6 +2,10 @@ body {
 	font-family: 'Lato', sans-serif;	
 }
 
+body.modal-open {
+	overflow: hidden;
+}
+
 .modal {
 	position: fixed;
 	z-index: 1;
@@ -12,6 +16,7 @@ body {
   	overflow: auto;
 	background-color: rgb(0,0,0);
 	background-color: rgba(0,0,0,0.85);
+	overflow: hidden;
 	display: none;
 }
 
@@ -40,7 +45,8 @@ h2 {
 }
 
 .currImage img {
-	max-height: 100%;
+	max-height: 90%;
+	margin-top: 10px;
 }
 
 
@@ -67,29 +73,25 @@ h2 {
 	vertical-align: middle;
 }
 
-.currTitle, .prev, .next {
+.currTitle {
 	color: white;
 }
 
-.nextImages {
-	display: none;
-	max-width: 1000px;
-	margin: 0 auto;
+.next svg path, .prev svg path {
+	fill: #fff;
 }
 
-.nextImages li {
-	list-style-type: none;
+.next, .prev {
+	position: absolute;
+	top: 50%;
 }
 
-.nextImages img {
-	float: left;
-	max-width: 200px;
-	max-height: 200px;
-	margin-left: 20px;
+.next {
+	right: 0;
 }
 
-.nextImages .nextImg1, .nextImg2, .nextImg3, .nextImg4 {
-
+.prev {
+	left: 0;
 }
 
 input[type="text"] {

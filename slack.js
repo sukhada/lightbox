@@ -44,9 +44,11 @@ function addEventListeners() {
 		self.lightbox.closeModal();
 	});
 	prev.addEventListener('click', function(event) {
+		event.stopPropagation();		
 		self.lightbox.renderSlide(self.lightbox.currIndex-1)
 	});
 	next.addEventListener('click', function(event) {
+		event.stopPropagation();		
 		self.lightbox.renderSlide(self.lightbox.currIndex+1)
 	});	
 
@@ -57,9 +59,9 @@ function addEventListeners() {
 	    var isPrev = false;
 
 	    if ("key" in evt) {
-	        isEscape = (evt.key == "Escape" || evt.key == "Esc");
-	        isNext = (evt.key == "ArrowRight");
-	        isPrev = (evt.key == "ArrowLeft");
+	        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+	        isNext = (evt.key === "ArrowRight") || (evt.key === "Right");
+	        isPrev = (evt.key === "ArrowLeft") || (evt.key === "Left");
 	    } else {
 	        isEscape = (evt.keyCode === 27);
 	        isNext = (evt.keyCode === 39);
