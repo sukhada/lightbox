@@ -1,7 +1,9 @@
 function renderPhotos(responseJSON, clearPhotos) {
 	var len = responseJSON.photos.photo.length;
 	var photos = responseJSON.photos.photo;
-	this.lightbox = new Lightbox();
+	if (!this.lightbox) {
+		this.lightbox = new Lightbox();
+	}
 	if (clearPhotos) {
 		this.lightbox.ul.innerHTML = '';
 	}
@@ -9,22 +11,10 @@ function renderPhotos(responseJSON, clearPhotos) {
 	
 	for (var i = 0; i < len-1; i++) {
 		var photo = photos[i];
-		this.flickrService.getPhotoInfo(photo.id, photo.secret, this.lightbox.appendPhoto, i);
+		this.flickrService.getPhotoInfo(photo.id, photo.secret, this.lightbox.appendPhoto, this.lightbox, i);
 	}
 
 	addEventListeners();
-
-	/*var nextImageNodes = document.getElementsByClassName('nextImgNode');
-	for (var i = 0; i < nextImageNodes.length; i++) {
-		var nextImageNode = nextImageNodes[i];
-		nextImageNode.addEventListener('click', function(event) {
-			if (event.target && event.target.src) {
-				var index = event.target.getAttribute('data-image-num');
-				console.log(index);
-				self.lightbox.renderSlide(index);			
-			}				
-		});
-	}	*/
 }
 
 function addEventListeners() {
@@ -58,15 +48,10 @@ function addEventListeners() {
 	    var isNext = false;
 	    var isPrev = false;
 
-	    if ("key" in evt) {
-	        isEscape = (evt.key === "Escape" || evt.key === "Esc");
-	        isNext = (evt.key === "ArrowRight") || (evt.key === "Right");
-	        isPrev = (evt.key === "ArrowLeft") || (evt.key === "Left");
-	    } else {
-	        isEscape = (evt.keyCode === 27);
-	        isNext = (evt.keyCode === 39);
-	        isPrev = (evt.keyCode === 37);
-	    }
+        isEscape = (evt.keyCode === 27);
+        isNext = (evt.keyCode === 39);
+        isPrev = (evt.keyCode === 37);
+        
 	    if (isEscape) {
 	    	self.lightbox.closeModal();
 	    	self.lightbox.clearCurrentImg();

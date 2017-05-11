@@ -7,12 +7,12 @@ function FlickrPhotoService() {
 	this.flickrUsername = 'http://www.flickr.com/photos/';
 	this.flickrGetUsernameURL = 'https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=' + this.flickrAPIKey + '&username=' + this.flickrUsername + '&format=json&nojsoncallback=1';
 
-	this.getPhotoInfo = function(photoID, secret, callback, index) {
+	this.getPhotoInfo = function(photoID, secret, callback, lightbox, index) {
 		var xmlHTTP = new XMLHttpRequest();
 		xmlHTTP.onreadystatechange = function() {
 			if (xmlHTTP.readyState === XMLHttpRequest.DONE) {
 				if (xmlHTTP.status === 200) {
-					callback(xmlHTTP, index);
+					callback.call(lightbox, xmlHTTP, index);
 				}
 	   			else if (xmlHTTP.status == 400) {
 	            	console.log('There was an error 400');
