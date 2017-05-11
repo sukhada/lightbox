@@ -51,7 +51,7 @@ function FlickrPhotoService() {
 			   				renderError("There was an error looking up this user");
 			           }
 			           else {
-			            	console.log('something else other than 200 was returned');
+			   				renderError("There was an error looking up this user");
 			           }
 					}
 				};
@@ -73,10 +73,10 @@ function FlickrPhotoService() {
 						renderPhotos(responseJSON, clearPhotos);
 				}
 	   			else if (xmlHTTP.status == 400) {
-	            	console.log('There was an error 400');
+			   		renderError("There was an error fetching photos");
 	           }
 	           else {
-	            	console.log('something else other than 200 was returned');
+			   		renderError("There was an error fetching photos");
 	           }
 			}
 		};

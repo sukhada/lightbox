@@ -14,6 +14,7 @@ function renderPhotos(responseJSON, clearPhotos) {
 	}
 	if (clearPhotos) {
 		this.lightbox.ul.innerHTML = '';
+		this.lightbox = new Lightbox();		
 	}
 	var self = this;
 	

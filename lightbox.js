@@ -48,6 +48,9 @@ Lightbox.prototype.closeModal = function() {
 
 Lightbox.prototype.renderSlide = function(num) {
 	var prev = document.getElementsByClassName('prev')[0];
+	if (num < 0 || num > this.photos.length-1) {
+		return;
+	}
 	if (num == 0) {
 		prev.style.display = 'none';
 	}
