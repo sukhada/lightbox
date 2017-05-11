@@ -47,10 +47,14 @@ Lightbox.prototype.closeModal = function() {
 };
 
 Lightbox.prototype.renderSlide = function(num) {
-	if (num < 0 || num > this.photos.length-1) {
-		alert('Photo not found!');
-		return;
+	var prev = document.getElementsByClassName('prev')[0];
+	if (num == 0) {
+		prev.style.display = 'none';
 	}
+	else {
+		prev.style.display = 'block';
+	}
+
     this.clearCurrentImg();
 	var photo = this.photos[num];
 	var imgURL = photo.getHighResURL();
@@ -58,16 +62,15 @@ Lightbox.prototype.renderSlide = function(num) {
 	var currentImage = document.getElementsByClassName('currImage')[0];
 	var currentImageNode = document.getElementsByClassName('currImageNode')[0];
 	var currentTitle = document.getElementsByClassName('currTitle')[0];
-	currentTitle.textContent = imgTitle;
 	currentImageNode.src = imgURL;
+	currentTitle.textContent = imgTitle;	
 	this.currIndex = parseInt(num,10);
 	this.preloadNextAndPrevImgs();
 };
 
 Lightbox.prototype.clearCurrentImg = function() {
 	var currentImageNode = document.getElementsByClassName('currImageNode')[0];
-	// REPLACE THIS LINK
-	currentImageNode.src = 'https://playerslounge.co/images/loading.gif';		
+	currentImageNode.src = 'loader.gif';		
 };
 
 Lightbox.prototype.preloadNextAndPrevImgs = function() {

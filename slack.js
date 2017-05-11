@@ -1,7 +1,12 @@
 function renderPhotos(responseJSON, clearPhotos) {
 	var len = responseJSON.photos.photo.length;
-	var photos = responseJSON.photos.photo;
 	var errorDiv = document.getElementsByClassName('errors')[0];	
+
+	if (len === 0) {
+		this.renderError('No photos found for this user');
+		return;
+	}
+	var photos = responseJSON.photos.photo;
 	errorDiv.innerHTML = '';
 
 	if (!this.lightbox) {
