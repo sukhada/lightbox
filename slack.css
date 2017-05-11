@@ -138,3 +138,20 @@ h1 {
 .prev {
 	left: 0;
 }
+
+@media (max-width: 700px) {
+    .currTitle {
+        font-size: 28px;
+        margin-top: 50px;
+    }
+
+    .photo-list img {
+    	max-width: 300px;
+    	max-height: 300px;
+    }
+
+    .currImage img {
+    	max-width: 350px;
+    	max-height: 350px;
+	}
+}
