@@ -3,7 +3,7 @@ function renderPhotos(responseJSON, clearPhotos) {
 	var photos = responseJSON.photos.photo;
 	var errorDiv = document.getElementsByClassName('errors')[0];	
 	errorDiv.innerHTML = '';
-		
+
 	if (!this.lightbox) {
 		this.lightbox = new Lightbox();
 	}
@@ -32,6 +32,7 @@ function addEventListeners() {
 	var prev = document.getElementsByClassName('prev')[0];
 	var next = document.getElementsByClassName('next')[0];
 	var currImage = document.getElementsByClassName('currImageNode')[0];
+	var submit = document.getElementsByClassName('submit')[0];
 
 	modal.addEventListener('click', function(event) {
 		self.lightbox.closeModal();
@@ -49,7 +50,11 @@ function addEventListeners() {
 	next.addEventListener('click', function(event) {
 		event.stopPropagation();		
 		self.lightbox.renderSlide(self.lightbox.currIndex+1)
-	});	
+	});
+	submit.addEventListener('click', function(event) {
+		var link = document.getElementsByClassName('imgSrcLink')[0];		
+		self.flickrService.getUsername(link.value);
+	});
 
 	document.onkeydown = function(evt) {
 	    evt = evt || window.event;
@@ -80,7 +85,7 @@ if (window.addEventListener) {
 	window.addEventListener('load', function() {
 		var link = document.getElementsByClassName('imgSrcLink')[0];  
 		link.addEventListener('keypress', function(event) {
-		    if ("key" in event && event.key === "Enter") {
+		    if (event.keyCode === 13) {
 		    	self.flickrService.getUsername(event.target.value);
 		    }
 		});  	

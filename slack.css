@@ -12,6 +12,10 @@ body.modal-open {
 	color: red;
 }
 
+.submit {
+	margin-left: 10px;
+}
+
 .search {
 	margin-bottom: 50px;
 	text-align: left;
@@ -52,11 +56,13 @@ input[type="text"].focus {
 }
 
 .escape {
-	color: white;
 	position: fixed;
 	right: 10px;
 	font-size: 40px;
-	font-family: sans-serif;
+}
+
+.icon-delete {
+	fill: #fff;
 }
 
 .container {
